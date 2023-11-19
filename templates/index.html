@@ -70,7 +70,7 @@
             resize: vertical;
         }
 
-        input[type=submit] {
+        button[type=submit] {
             background-color: white;
             color: #000000;
             padding: 10px 20px 12px 20px;
@@ -83,7 +83,7 @@
             z-index: 10;
         }
 
-        input[type=submit]:hover {
+        button[type=submit]:hover {
             background-color: #ffffff;
             border: 1px solid #d2b356;
             color: #d2b356;
@@ -249,7 +249,7 @@
                 <div class="project_title"><h1>My projects</h1></div>
                 <div class="project_border"></div>
                 {% for project in page_obj %}
-                   <div class="card col-4" >
+                    <div class="card col-4">
                         {% if project.image %}
                             <img src="{{ project.image.url }}" alt="Denim Jeans" style="width:100%">
                         {% else %}
@@ -381,22 +381,23 @@
 
             <div class="contact_title"><h1>Contact Me</h1></div>
             <div class="container">
-                <form action="#">
+                <form  method="post" role="form">
                     {% csrf_token %}
-                    <label for="fname">First Name</label>
-                    <input type="text" id="fname" name="firstname" placeholder="Your name..">
+                    {{ contact_form.first_name }}
+                    {{ contact_form.first_name.errors }}
 
-                    <label for="lname">Last Name</label>
-                    <input type="text" id="lname" name="lastname" placeholder="Your last name..">
+                    {{ contact_form.last_name }}
+                    {{ contact_form.last_name.errors }}
 
-                    <label for="email">Email</label>
-                    <input type="text" id="email" name="email" placeholder="example@gemail.com">
+                    {{ contact_form.email }}
+                    {{ contact_form.email.errors }}
 
-                    <label for="subject">message</label>
-                    <textarea id="subject" name="subject" placeholder="your message for me.."
-                              style="height:200px"></textarea>
+                    {{ contact_form.message }}
+                    {{ contact_form.message.errors }}
 
-                    <input type="submit" value="Submit">
+                    <button type="submit">Submit</button>
+
+
                 </form>
             </div>
         </div>

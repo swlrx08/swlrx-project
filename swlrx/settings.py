@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'Home',
     'Documents',
     'Projects',
+    'ContactMe',
     # installed apps
     'ckeditor',
     'ckeditor_uploader',
@@ -57,6 +58,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+ROOT_URLCONF = 'swlrx.urls'
+
 
 ROOT_URLCONF = 'swlrx.urls'
 
