@@ -1,10 +1,11 @@
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.db import models
 from django.utils.text import slugify
+from sorl.thumbnail import ImageField
 
 
 class Projects(models.Model):
-    image = models.ImageField(upload_to='media/projects_images')
+    image = ImageField(upload_to='media/projects_images')
     title = models.CharField(max_length=10)
     short_description = models.CharField(max_length=200)
     project_content = RichTextUploadingField(blank=True, null=True)

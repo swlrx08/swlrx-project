@@ -1,4 +1,5 @@
 {% extends 'components/_layout.html' %}
+{% load thumbnail %}
 {% load static %}
 {% block title %}
     Home Page
@@ -209,13 +210,17 @@
         <aside id="gallery" class="row text-center scrollto clearfix" data-featherlight-gallery
                data-featherlight-filter="a">
             {% for document in documents %}
-                <a href="{{ document.image.url }}" data-featherlight="image"
-                   class="col-3 wow fadeIn"
-                   data-wow-delay="0.1s"><img src="{{ document.image.url }}"
-                                              alt="{{ document.title }}"/></a>
+                {% thumbnail document.image "800" as big %}
+                    {% thumbnail document.image "950x531" as small %}
+                        <a href="{{ big.url }}" data-featherlight="image" class="col-3 wow fadeIn"
+                           data-wow-delay="0.1s">
+                            <img src="{{ small.url }}" alt="{{ document.title }}">
+                        </a>
+                    {% endthumbnail %}
+                {% endthumbnail %}
             {% endfor %}
 
-            <a href="{% static 'images/gallery-images/gallery-image-2.jpg' %}" data-featherlight="image"
+            {% comment %}    <a href="{% static 'images/gallery-images/gallery-image-2.jpg' %}" data-featherlight="image"
                class="col-3 wow fadeIn"
                data-wow-delay="0.3s"><img src="{% static 'images/gallery-images/gallery-image-2.jpg' %}"
                                           alt="Landing Page"/></a>
@@ -234,7 +239,7 @@
             <a href="{% static 'images/gallery-images/gallery-image-6.jpg' %}" data-featherlight="image"
                class="col-3 wow fadeIn"
                data-wow-delay="0.7s"><img src="{% static 'images/gallery-images/gallery-image-6.jpg' %}"
-                                          alt="Landing Page"/></a>
+                                          alt="Landing Page"/></a>{% endcomment %}
 
         </aside>
         <!--End of Gallery-->
@@ -250,11 +255,12 @@
                 <div class="project_border"></div>
                 {% for project in page_obj %}
                     <div class="card col-4">
-                        {% if project.image %}
-                            <img src="{{ project.image.url }}" alt="Denim Jeans" style="width:100%">
-                        {% else %}
+                        {% thumbnail project.image "700x400" as im %}
+                            <img src="{{ im.url }}" alt="{{ project.title }}" style="width:100%">
+                        {% empty %}
                             <img src="{% static 'images/No_image.png' %}" alt="Denim Jeans" style="width:100%">
-                        {% endif %}
+                        {% endthumbnail %}
+
                         <h2>{{ project.title }}</h2>
                         <p>{{ project.short_description }}</p>
                         <p>
@@ -268,36 +274,43 @@
         </div>
         <!--End projects-->
         <!--pagination-->
-        <section>
-            <div class="d-flex justify-content-center">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                        {% if page_obj.has_previous %}
-                            <li>
-                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}"
-                                   aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                        {% endif %}
+     <section>
+    <div class="d-flex justify-content-center">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}"
+                           aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
 
-                        {% for PageNumber in paginator.page_range %}
-                            <li class="page-item">
-                                <a href="?page={{ PageNumber }}"
-                                   class="page-link">{{ PageNumber }}</a>
-                            </li>
-                        {% endfor %}
-                        {% if page_obj.has_next %}
-                            <li>
-                                <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                        {% endif %}
+                {% for page_number in paginator.page_range %}
+                    {% if page_obj.number == page_number %}
+                        <li class="page-item active">
+                            <span class="page-link">{{ page_number }}</span>
+                        </li>
+                    {% else %}
+                        <li class="page-item">
+                            <a href="?page={{ page_number }}" class="page-link">{{ page_number }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
 
-                    </ul>
-                </nav>
-            </div>
-        </section>
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}"
+                           aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</section>
         <!--End pagination-->
         <!--Pricing Tables-->
         <section id="services" class="secondary-color text-center scrollto clearfix ">
@@ -381,7 +394,7 @@
 
             <div class="contact_title"><h1>Contact Me</h1></div>
             <div class="container">
-                <form  method="post" role="form">
+                <form method="post" role="form">
                     {% csrf_token %}
                     {{ contact_form.first_name }}
                     {{ contact_form.first_name.errors }}

@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     # installed apps
     'ckeditor',
     'ckeditor_uploader',
+    'sorl.thumbnail',
+    'imagekit',
 ]
 CKEDITOR_UPLOAD_PATH = "uploads/"
 

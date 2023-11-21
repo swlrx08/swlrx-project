@@ -11,7 +11,7 @@ from Projects.models import Projects
 def home(request):
     documents = Documents.objects.all()
     projects = Projects.objects.all()
-    paginator = Paginator(projects, 2)
+    paginator = Paginator(projects, 6)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
